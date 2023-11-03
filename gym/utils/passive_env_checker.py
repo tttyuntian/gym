@@ -152,14 +152,13 @@ def check_obs(obs, observation_space: spaces.Space, method_name: str):
         ), f"{pre} length is not same as the observation space length, obs length: {len(obs)}, space length: {len(observation_space.spaces)}"
         for sub_obs, sub_space in zip(obs, observation_space.spaces):
             check_obs(sub_obs, sub_space, method_name)
-    # Avoid error message caused by the modified `observation_space`
-    # elif isinstance(observation_space, spaces.Dict):
-    #     assert isinstance(obs, dict), f"{pre} must be a dict, actual type: {type(obs)}"
-    #     assert (
-    #         obs.keys() == observation_space.spaces.keys()
-    #     ), f"{pre} observation keys is not same as the observation space keys, obs keys: {list(obs.keys())}, space keys: {list(observation_space.spaces.keys())}"
-    #     for space_key in observation_space.spaces.keys():
-    #         check_obs(obs[space_key], observation_space[space_key], method_name)
+    elif isinstance(observation_space, spaces.Dict):
+        assert isinstance(obs, dict), f"{pre} must be a dict, actual type: {type(obs)}"
+        assert (
+            obs.keys() == observation_space.spaces.keys()
+        ), f"{pre} observation keys is not same as the observation space keys, obs keys: {list(obs.keys())}, space keys: {list(observation_space.spaces.keys())}"
+        for space_key in observation_space.spaces.keys():
+            check_obs(obs[space_key], observation_space[space_key], method_name)
 
     try:
         if obs not in observation_space:
